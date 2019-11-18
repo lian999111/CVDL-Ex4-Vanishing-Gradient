@@ -5,9 +5,10 @@ from tensorflow.keras import Model
 
 # My own dense layer by subclassing
 class MyDenseLayer(layers.Layer):
-    def __init__(self, units=32):
+    def __init__(self, units=32, activation='sigmoid'):
         super(MyDenseLayer, self).__init__()
         self.units = units
+        self.activation = activation
 
     def build(self, input_shape):
         self.w = self.add_weight(shape=(input_shape[-1], self.units),
@@ -18,14 +19,17 @@ class MyDenseLayer(layers.Layer):
                                 trainable=True)
 
     def call(self, inputs):
-        return tf.matmul(inputs, self.w) + self.b
+        if self.activation == 'sigmoid':
+            return tf.nn.sigmoid(tf.matmul(inputs, self.w) + self.b)
+        else:
+            return tf.nn.relu(tf.matmul(inputs, self.w) + self.b)
 
 # My multi-layer perceptrons by subclassing
 # My multi-layer perceptron by subclassing
 class My1HiddenLayerModel(Model):
-    def __init__(self):
+    def __init__(self, activation='sigmoid'):
         super(My1HiddenLayerModel, self).__init__()
-        self.layer_1 = MyDenseLayer(units=20)
+        self.layer_1 = MyDenseLayer(units=20, activation=activation)
         self.output_layer = layers.Dense(10, activation='softmax')
     
     def call(self, input):
@@ -33,10 +37,10 @@ class My1HiddenLayerModel(Model):
         return self.output_layer(x)
 
 class My2HiddenLayerModel(Model):
-    def __init__(self):
+    def __init__(self, activation='sigmoid'):
         super(My2HiddenLayerModel, self).__init__()
-        self.layer_1 = MyDenseLayer(units=20)
-        self.layer_2 = MyDenseLayer(units=20)
+        self.layer_1 = MyDenseLayer(units=20, activation=activation)
+        self.layer_2 = MyDenseLayer(units=20, activation=activation)
         self.output_layer = layers.Dense(10, activation='softmax')
 
     def call(self, input):
@@ -45,11 +49,11 @@ class My2HiddenLayerModel(Model):
         return self.output_layer(x)
 
 class My3HiddenLayerModel(Model):
-    def __init__(self):
+    def __init__(self, activation='sigmoid'):
         super(My3HiddenLayerModel, self).__init__()
-        self.layer_1 = MyDenseLayer(units=20)
-        self.layer_2 = MyDenseLayer(units=20)
-        self.layer_3 = MyDenseLayer(units=20)
+        self.layer_1 = MyDenseLayer(units=20, activation=activation)
+        self.layer_2 = MyDenseLayer(units=20, activation=activation)
+        self.layer_3 = MyDenseLayer(units=20, activation=activation)
         self.output_layer = layers.Dense(10, activation='softmax')
 
     def call(self, input):
@@ -59,16 +63,16 @@ class My3HiddenLayerModel(Model):
         return self.output_layer(x)
 
 class My8HiddenLayerModel(Model):
-    def __init__(self):
+    def __init__(self, activation='sigmoid'):
         super(My8HiddenLayerModel, self).__init__()
-        self.layer_1 = MyDenseLayer(units=20)
-        self.layer_2 = MyDenseLayer(units=20)
-        self.layer_3 = MyDenseLayer(units=20)
-        self.layer_4 = MyDenseLayer(units=20)
-        self.layer_5 = MyDenseLayer(units=20)
-        self.layer_6 = MyDenseLayer(units=20)
-        self.layer_7 = MyDenseLayer(units=20)
-        self.layer_8 = MyDenseLayer(units=20)
+        self.layer_1 = MyDenseLayer(units=20, activation=activation)
+        self.layer_2 = MyDenseLayer(units=20, activation=activation)
+        self.layer_3 = MyDenseLayer(units=20, activation=activation)
+        self.layer_4 = MyDenseLayer(units=20, activation=activation)
+        self.layer_5 = MyDenseLayer(units=20, activation=activation)
+        self.layer_6 = MyDenseLayer(units=20, activation=activation)
+        self.layer_7 = MyDenseLayer(units=20, activation=activation)
+        self.layer_8 = MyDenseLayer(units=20, activation=activation)
         self.output_layer = layers.Dense(10, activation='softmax')
     
     def call(self, input):
