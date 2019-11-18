@@ -85,3 +85,6 @@ class My8HiddenLayerModel(Model):
 if __name__ == '__main__':
     model = My1HiddenLayerModel()
     prediction = model(np.array([[1.0, 0.0, 1.0, 0.0]], dtype=np.float32))
+    print(model.layer_1.w.numpy())
+    print(model.layer_1.b.numpy())
+
